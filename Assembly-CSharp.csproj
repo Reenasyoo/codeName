@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\Menu.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\StateSwitch.cs" />
+     <Compile Include="Assets\Scripts\Stuff\DIRSA PISAS.cs" />
      <Compile Include="Assets\Scripts\The.cs" />
      <Compile Include="Assets\Scripts\Ui.cs" />
      <Compile Include="Assets\Scripts\Winner.cs" />
