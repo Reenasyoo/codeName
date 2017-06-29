@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{405C3F80-E199-0AF4-E352-D0770DD6F033}</ProjectGuid>
+    <ProjectGuid>{80B9AB0C-B222-9E10-0BF1-C4B1B23A9A8B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -58,7 +58,7 @@
      <Compile Include="Assets\Scripts\gameCamera.cs" />
      <Compile Include="Assets\Scripts\testWidth.cs" />
  <Reference Include="Facebook.Unity.Settings">
- <HintPath>/Users/admin/Desktop/BrawlerModeOn/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
+ <HintPath>/Dev0/codeName/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
