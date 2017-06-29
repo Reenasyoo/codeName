@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class gameCamera : MonoBehaviour {
 
-	private Camera camrea;
+	//private Camera camera;
 	private Vector3 position;
 	private Vector3 center;
 
 
 	// Use this for initialization
 	void Start () {
-		camrea = GetComponent<Camera> ();
+		//camera = GetComponent<Camera> ();
 		
 		
 		

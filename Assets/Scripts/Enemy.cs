@@ -8,8 +8,8 @@ public class Enemy : MonoBehaviour {
 
 
 	internal Rigidbody body;
-	private bool movingLeft = false;
-	private bool movingRight = false;
+	//private bool movingLeft = false;
+	//private bool movingRight = false;
 	private bool jumping = false;
 	private bool firing = false;
 	private bool pressFire = false;
