@@ -111,34 +111,34 @@ public class Menu : MonoBehaviour{
 		SceneManager.LoadScene("SceneTest");
 		Debug.Log ("play scene");
 		// TODO: change to .setActive()
-		gameModePanel.gameObject.active = false;
+		gameModePanel.gameObject.SetActive(false);
 	}
 
 	public void bask () {
 		Debug.Log ("game mode panel");
-		menuPanel.gameObject.active = false;
-		gameModePanel.gameObject.active = true;
-		characterPanel.gameObject.active = false;
+		menuPanel.gameObject.SetActive(false);
+		gameModePanel.gameObject.SetActive(true);
+		characterPanel.gameObject.SetActive(false);
 		eventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(gm1Button);
 	}
 
 	public void back () {
 		Debug.Log ("back");
-		menuPanel.gameObject.active = true;
-		gameModePanel.gameObject.active = false;
+		menuPanel.gameObject.SetActive(true);
+		gameModePanel.gameObject.SetActive(false);
 		eventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(gameModeButton);
 	}
 
 	public void backG () {
 		Debug.Log ("back");
-		menuPanel.gameObject.active = true;
-		gameModePanel.gameObject.active = false;
-		characterPanel.gameObject.active = false;
+		menuPanel.gameObject.SetActive(true);
+		gameModePanel.gameObject.SetActive(false);
+		characterPanel.gameObject.SetActive(false);
 		eventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(gameModeButton);
 	}
 	public void chr() {
-		gameModePanel.gameObject.active = false;
-		characterPanel.gameObject.active = true;
+		gameModePanel.gameObject.SetActive(false);
+		characterPanel.gameObject.SetActive(true);
 		eventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(randomButton);
 	}
 
@@ -195,7 +195,7 @@ public class Menu : MonoBehaviour{
 		// create panel
 		GameObject panel;
 		panel = new GameObject();
-		panel.gameObject.active = pActive;
+		panel.gameObject.SetActive(pActive);
 		panel.name = pName;
 		panel.AddComponent<CanvasRenderer> ();
 		panel.AddComponent<RectTransform> ();
@@ -219,7 +219,7 @@ public class Menu : MonoBehaviour{
 		// create panel
 		GameObject panel;
 		panel = new GameObject();
-		panel.gameObject.active = pActive;
+		panel.gameObject.SetActive(pActive);
 		panel.name = pName;
 		panel.AddComponent<CanvasRenderer> ();
 		panel.AddComponent<RectTransform> ();
