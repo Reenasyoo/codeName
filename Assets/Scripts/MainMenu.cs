@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+	BUGS:
+		-Player 2 name in character select not showing.
+		-
+	-END OF BUGS
+
+
+ */
+
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +17,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
 public class MainMenu : Menu {
-		
+	
+		float xAxis;
+
+	//public GameObject eventSystem;
+
 	// Canvas Object
 	public GameObject menuWrapper;
 	public GameObject eventSystem;
@@ -63,9 +77,12 @@ public class MainMenu : Menu {
 	public Sprite[] charArray;
 	public List<GameObject> charactersAll;
 
+	public Selectable oldSelectable;
+
 	// Use this for initialization
 	void Start () {
 
+		//eventSystem = new EventSystem(); LATER
 		eventSystem = GameObject.Find("EventSystem");
 
 		buttonTexture = Resources.Load<Sprite>("ButtonTest");
@@ -95,6 +112,37 @@ public class MainMenu : Menu {
 	// Update is called once per frame
 	void Update () {
 		curSelGO = eventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject;
+		Selectable newSelectable = curSelGO.GetComponent<Button>().FindSelectableOnLeft();
+
+
+		xAxis = Input.GetAxis ("Horizontal");
+		bool a = Input.GetKey(KeyCode.A);
+		// yAxis = Input.GetAxis ("Vertical");
+
+		if (newSelectable.IsHighlighted()) {
+			
+			newSelectable.GetComponent<Image> ().sprite = rails;
+        	Debug.Log(newSelectable.name);
+
+			if(oldSelectable != newSelectable){
+				newSelectable.GetComponent<Image> ().sprite = buttonTexture;
+			}
+
+		} else {
+			newSelectable.GetComponent<Image> ().sprite = buttonTexture;
+		} 
+
+		if (xAxis > 0) {
+			// newSelectable.GetComponent<Image> ().sprite = rails;
+        	Debug.Log(newSelectable.name);
+
+		} else {
+			//movingRight = false;
+		}
+
+
+
+
 		if(curSelGO.name == "Random Button" && !endRand ) {
 			if(prevSel != null) {
 				p1Txt.GetComponent<Text> ().text = prevSel.name;
@@ -104,14 +152,12 @@ public class MainMenu : Menu {
 				p1Img.GetComponent<Image> ().sprite = charArray[2];
 			}
 		}
+
 		if(curSelGO.name == "Random Button" && endRand ) {
 			p1Img.GetComponent<Image> ().sprite = randChar;
 			p1Txt.GetComponent<Text> ().text = randChar.name;
-			
-			//GameObject randSel = GameObject.Find(randChar.name);
-			// Debug.Log(randSel.name);
-			// eventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(randSel);
 		}
+
 		if (curSelGO.name != "Random Button" && !endRand ) {
 			p1Txt.GetComponent<Text> ().text = curSelGO.name;
 			p1Img.GetComponent<Image> ().sprite = curSelGO.GetComponent<Image> ().sprite;
@@ -120,12 +166,15 @@ public class MainMenu : Menu {
 				prevSel = curSelGO;	
 			}
 		}
+
 		if (curSelGO.name != "Random Button" && endRand ) {
 			p1Txt.GetComponent<Text> ().text = curSelGO.name;
 			p1Img.GetComponent<Image> ().sprite = curSelGO.GetComponent<Image> ().sprite;
 			endRand = false;
 			prevSel = curSelGO;
 		}
+
+		oldSelectable = newSelectable;
 	}
 	// Test function for  button onClick event
 	public void task () {

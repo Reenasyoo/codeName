@@ -22,14 +22,17 @@ public class gameCamera : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (The.player != null) {
+		if (The.player == null) {
 			Vector3 target = The.player.transform.position;
+
+			center = (target/2.0f) + target;
+          	transform.LookAt(center);
+		}
+		else {
 			Vector3 target2 = The.enemy.transform.position;
 
-			center = ((target2 - target)/2.0f) + target;
+			center = (target2/2.0f) + target2;
           	transform.LookAt(center);
-
-			
 		}
 	}
 }
