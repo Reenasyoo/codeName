@@ -23,8 +23,7 @@ public class Player : MonoBehaviour {
 	public string p = "Player";
 	public string b = "BulletPrefabClone";
 
-	float xAxis;
-	//float yAxis = 0f;
+	public float moveSpeed = 5f;
 
 	private Animator anim;
 	private SpriteRenderer sprRend;
@@ -60,39 +59,12 @@ public class Player : MonoBehaviour {
 		
 		anim.SetTrigger("Idle");
 	
-		xAxis = Input.GetAxis ("Horizontal");
-
-		// yAxis = Input.GetAxis ("Vertical");
-
-
-		if (xAxis <= -0.1f) {
-			movingLeft = true;
-
-		} else {
-			movingLeft = false;
-		} 
-
-		if (xAxis > 0) {
-			movingRight = true;
-
-		} else {
-			movingRight = false;
-		}
-
-		if (movingLeft) {
-			transform.Translate(Vector3.left * 5 * Time.deltaTime);
-			direction = -1;
+		if (Input.GetAxisRaw ("Horizontal") > 0.5f || Input.GetAxisRaw ("Horizontal") < -0.5f)
+		{
+			transform.Translate (Vector2.right * Input.GetAxisRaw ("Horizontal") * moveSpeed * Time.deltaTime);
 			anim.SetTrigger("Walk");
-			sprRend.flipX = true;
-
 		}
-		if (movingRight) {
-			transform.Translate(Vector3.right * 5 * Time.deltaTime);
-			direction = 1;
-			anim.SetTrigger("Walk");
-			sprRend.flipX = false;
-		}
-
+			
 		if ((Input.GetKey(KeyCode.JoystickButton0)) && !jumping ) {
 			body.AddForce (0, jumpHeight, 0, ForceMode.Impulse);
 			jumping = true;
