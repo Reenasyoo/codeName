@@ -42,6 +42,11 @@ public class Enemy : MonoBehaviour {
 
 	void OnCollisionEnter(Collision other) {
 
+		 foreach (ContactPoint contact in other.contacts)
+        {
+            Debug.DrawRay(contact.point, contact.normal, Color.red);
+        }
+
 		if(other.transform.gameObject.name == wall || other.transform.gameObject.name == p)
 		{
 			jumping = false;
@@ -67,7 +72,7 @@ public class Enemy : MonoBehaviour {
 			sprRend.flipX = false;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Space)&& !jumping ) {
+		if (Input.GetKeyDown(KeyCode.Space)&& !jumping ) { 
 			body.AddForce (0, jumpHeight, 0, ForceMode.Impulse);
 			jumping = true;
 

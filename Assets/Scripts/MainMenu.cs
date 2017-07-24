@@ -30,6 +30,7 @@ public class MainMenu : Menu {
 	public GameObject menuPanel;
 	public GameObject gameModeButton;
 	public GameObject helpButton;
+	public GameObject quitButton;
 	
 	// Game Mode panel
 	public GameObject gameModePanel;
@@ -79,6 +80,9 @@ public class MainMenu : Menu {
 
 	public Selectable oldSelectable;
 
+
+	public bool quit = false;
+
 	// Use this for initialization
 	void Start () {
 
@@ -97,6 +101,8 @@ public class MainMenu : Menu {
 		menuPanel = CreatePanel("Menu Panel", panelColor, menuWrapper, true);
 		gameModeButton = CreateButton(60, "Game Modes", menuPanel, bask);
 		helpButton = CreateButton(0, "Help", menuPanel, null);
+		quitButton = CreateButton(-60, "Quit Game", menuPanel, quitGame);
+
 		eventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(gameModeButton);
 		gameModePanel = CreatePanel("Game Mode Panel", Color.blue, menuWrapper, false);
 		gm1Button = CreateButton(60, "character select", gameModePanel, chr);
@@ -113,35 +119,6 @@ public class MainMenu : Menu {
 	void Update () {
 		curSelGO = eventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().currentSelectedGameObject;
 		Selectable newSelectable = curSelGO.GetComponent<Button>().FindSelectableOnLeft();
-
-
-		xAxis = Input.GetAxis ("Horizontal");
-		bool a = Input.GetKey(KeyCode.A);
-		// yAxis = Input.GetAxis ("Vertical");
-
-		if (newSelectable.IsHighlighted()) {
-			
-			newSelectable.GetComponent<Image> ().sprite = rails;
-        	Debug.Log(newSelectable.name);
-
-			if(oldSelectable != newSelectable){
-				newSelectable.GetComponent<Image> ().sprite = buttonTexture;
-			}
-
-		} else {
-			newSelectable.GetComponent<Image> ().sprite = buttonTexture;
-		} 
-
-		if (xAxis > 0) {
-			// newSelectable.GetComponent<Image> ().sprite = rails;
-        	Debug.Log(newSelectable.name);
-
-		} else {
-			//movingRight = false;
-		}
-
-
-
 
 		if(curSelGO.name == "Random Button" && !endRand ) {
 			if(prevSel != null) {
@@ -175,6 +152,11 @@ public class MainMenu : Menu {
 		}
 
 		oldSelectable = newSelectable;
+
+		if(quit) {
+			Application.Quit();
+		}
+
 	}
 	// Test function for  button onClick event
 	public void task () {
@@ -207,6 +189,12 @@ public class MainMenu : Menu {
 		gameModePanel.gameObject.SetActive(false);
 		characterPanel.gameObject.SetActive(true);
 	}
+
+	public void quitGame() {
+		quit = true;
+		Debug.Log ("Quit");
+	}
+
 	public void character() {
 		headerPanel = CreatePanel("header", Color.blue, 0.15f, 0.6f, 0.85f, 0.85f, characterPanel, true);
 		GameObject p1Panel = CreatePanel ("P1 Panel", Color.red, 0f, 0f, 0.5f, 1f, headerPanel, true);
@@ -261,7 +249,7 @@ public class MainMenu : Menu {
 		charBackButton = CreateButton(0, "Back", backPanel, bask);
 	}
 
-			public void charRandom() {
+		public void charRandom() {
 			endRand = true;
 			// set random selcected character but only sprite
 			charL = (float)charArray.Length;

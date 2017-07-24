@@ -42,11 +42,14 @@ public class Player : MonoBehaviour {
 
 	}
 
+	void changeJump() {
+		this.jumping = false;
+	}
 	void OnCollisionEnter(Collision other) {
 
-		if(other.transform.gameObject.name == wall || other.transform.gameObject.name == p)
-		{
-			jumping = false;
+		if(other.transform.gameObject.name == wall || other.transform.gameObject.name == p) {
+			InvokeRepeating("changeJump", 0.2f, 1.0f);
+			Invoke("endRep", 1);
 		}
 
 		if(other.transform.gameObject.name == b) {
@@ -54,18 +57,30 @@ public class Player : MonoBehaviour {
 		}
 
 	}
-		// Update is called once per frame
+
+	public void endRep() {
+			CancelInvoke();
+	}
+
+	// Update is called once per frame
 	void Update () {
 		
 		anim.SetTrigger("Idle");
 	
 		if (Input.GetAxisRaw ("Horizontal") > 0.5f || Input.GetAxisRaw ("Horizontal") < -0.5f)
-		{
+		{	
 			transform.Translate (Vector2.right * Input.GetAxisRaw ("Horizontal") * moveSpeed * Time.deltaTime);
 			anim.SetTrigger("Walk");
+
+			if(Input.GetAxisRaw ("Horizontal") > 0.5f) {
+				sprRend.flipX = false;
+			} 
+			else if(Input.GetAxisRaw ("Horizontal") < -0.5f) {
+				sprRend.flipX = true;
+			}
 		}
 			
-		if ((Input.GetKey(KeyCode.JoystickButton0)) && !jumping ) {
+		if ((Input.GetKey(KeyCode.JoystickButton0)) || (Input.GetKey(KeyCode.JoystickButton14)) && !jumping ) { 
 			body.AddForce (0, jumpHeight, 0, ForceMode.Impulse);
 			jumping = true;
 
