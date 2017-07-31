@@ -6,163 +6,51 @@ using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour {
 
-
-	internal Rigidbody body;
-	//private bool movingLeft = false;
-	//private bool movingRight = false;
-	private bool jumping = false;
-	private bool firing = false;
-	private bool pressFire = false;
-	private int jumpHeight = 9;
-	public int direction = 0;
 	public int hp = 100;
 	public GameObject prefab;
-	Vector3 pos;
-
-	public string wall = "Cube";
-	public string p = "Player";
-	public string b = "BulletPrefabClone";
-
-	float xAxis;
-	//float yAxis = 0f;
-
+	public bool huggingWall = false;
 	private Animator anim;
+
+	[Header("Movement")]
+	public float moveSpeed;
+	public float jumpHeight;
+	private Rigidbody2D rb;
 	private SpriteRenderer sprRend;
+	public int direction;
+	public bool jumping;
 
-	// Use this for initialization
-	void Awake () {
-		body = GetComponent<Rigidbody> ();
-		anim = GetComponent<Animator> ();
-		sprRend = GetComponent<SpriteRenderer>();
+	[Header("Ground Check")]
+	public Transform groundCheck;
+	public float groundCheckRadius;
+	public LayerMask whatIsGround;
+	private bool grounded;
+
+	void Start() {
 		The.enemy = this;
+		rb = GetComponent<Rigidbody2D> ();
 		prefab = Resources.Load<GameObject>("Prefabs/BulletPrefab");
-		direction = 1;
-
+		direction = -1;
 	}
 
-	void OnCollisionEnter(Collision other) {
-
-		 foreach (ContactPoint contact in other.contacts)
-        {
-            Debug.DrawRay(contact.point, contact.normal, Color.red);
-        }
-
-		if(other.transform.gameObject.name == wall || other.transform.gameObject.name == p)
-		{
-			jumping = false;
-		}
-
-	}
-		// Update is called once per frame
-	void Update () {
-		anim.SetTrigger("Idle");
-	
-
-		if (Input.GetKey(KeyCode.A)) {
-			transform.Translate(Vector3.left * 5 * Time.deltaTime);
-			direction = -1;
-			anim.SetTrigger("Walk");
-			sprRend.flipX = true;
-
-		}
-		if (Input.GetKey (KeyCode.D)) {
-			transform.Translate(Vector3.right * 5 * Time.deltaTime);
-			direction = 1;
-			anim.SetTrigger("Walk");
-			sprRend.flipX = false;
-		}
-
-		if (Input.GetKeyDown(KeyCode.Space)&& !jumping ) { 
-			body.AddForce (0, jumpHeight, 0, ForceMode.Impulse);
-			jumping = true;
-
-			
-		} 
-		if (jumping) {
-			anim.SetTrigger("Jump");
-		}
-
-		if (Input.GetKey (KeyCode.LeftControl)) {
-			firing = true;
-
+	void OnCollisionEnter2D(Collision2D other) {
+		if (other.transform.gameObject.tag == "Wall" && The.player.GetComponent<Charge>().rammed) {
+			huggingWall = true;
 		} else {
-			firing = false; 
-			pressFire = false;
-		}
-
-		if (firing && !pressFire) {
-
-			if (direction < 0) {
-				pos = new Vector3 (transform.position.x - 1, transform.position.y, transform.position.z);
-			} else if (direction > 0) {
-				pos = new Vector3 (transform.position.x + 1, transform.position.y, transform.position.z);
-			}
-
-			GameObject clone = Instantiate(prefab, pos, Quaternion.identity);
-			if(clone != null) {
-				clone.GetComponent<Bullet>().direction = direction;
-			}
-			pressFire = true;
-		} 
-
-		if (The.player.hp == 0)
-		{
-			SceneManager.LoadScene("End");
+			huggingWall = false;
 		}
 	}
 
+	void FixedUpdate () {
+		grounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, whatIsGround);
+	}
 
+	void Update()
+	{
+		EnemyAI ();
+	}
+
+	void EnemyAI()
+	{
+		
+	}
 }
-
-/*
-		xAxis = Input.GetAxis ("Horizontal");
-
-		// yAxis = Input.GetAxis ("Vertical");
-
-
-		if (xAxis <= -0.1f) {
-			movingLeft = true;
-
-		} else {
-			movingLeft = false;
-		} 
-
-		if (xAxis > 0) {
-			movingRight = true;
-
-		} else {
-			movingRight = false;
-		}
-
-		if (Input.GetKey(KeyCode.A) || movingLeft) {
-			transform.Translate(Vector3.left * 5 * Time.deltaTime);
-			direction = -1;
-			anim.SetTrigger("Walk");
-			sprRend.flipX = true;
-
-		}
-		if (Input.GetKey (KeyCode.D) || movingRight) {
-			transform.Translate(Vector3.right * 5 * Time.deltaTime);
-			direction = 1;
-			anim.SetTrigger("Walk");
-			sprRend.flipX = false;
-		}
-
-		if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.JoystickButton0)) && !jumping ) {
-			body.AddForce (0, jumpHeight, 0, ForceMode.Impulse);
-			jumping = true;
-
-			
-		} 
-		if (jumping) {
-			anim.SetTrigger("Jump");
-		}
-
-		if (Input.GetKey (KeyCode.LeftControl) || Input.GetKey (KeyCode.Joystick1Button1)) {
-			firing = true;
-
-		} else {
-			firing = false; 
-			pressFire = false;
-		}
- */

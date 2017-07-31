@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-	private int moveSpeed = 10;
+	private int moveSpeed = 20;
 	public int direction = 1;
 
-	public Rigidbody bullet;
+	public Rigidbody2D bullet;
 	public Player player;
 	public Enemy enemy;
 
@@ -16,11 +16,11 @@ public class Bullet : MonoBehaviour {
 	public string p = "Player";
 	public string e = "Enemy";
 
-	// Use this for initialization
+
 	void Awake () {
-		bullet = GetComponent<Rigidbody>();
+		bullet = GetComponent<Rigidbody2D>();
 		GameObject thePlayer = GameObject.Find("Player");
-        Player playerScript = thePlayer.GetComponent<Player>();
+		Player playerScript = The.player.GetComponent<Player>();
 		direction = playerScript.direction;
 	}
 
@@ -29,9 +29,9 @@ public class Bullet : MonoBehaviour {
 	}
 
 
-	void OnCollisionEnter(Collision other)
+	void OnCollisionEnter2D (Collision2D other)
 	{
-		if (other.transform.gameObject.name == wall || other.transform.gameObject.name == cube)
+		if (other.transform.gameObject.tag == "Wall" || other.transform.gameObject.name == cube)
 		{
 			Destroy(this.gameObject);	
 		}
@@ -46,13 +46,12 @@ public class Bullet : MonoBehaviour {
 		}
 
 	}
-	// Update is called once per frame
+
 	void Update () {
 		move();
 	}
 
 	void move() {
-		bullet.velocity = new Vector3(moveSpeed * direction, 0, 0);
-
+		bullet.velocity = new Vector2 (moveSpeed * direction, 0);
 	}
 }
