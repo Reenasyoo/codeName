@@ -27,7 +27,7 @@ public class Player : MonoBehaviour {
 	public bool pressFire = false;
 	public Vector3 pos;
 	public bool activeSkill;
-	public bool dashing = false;
+	// public bool dashing = false;
 	public GameObject prefab;
 	public int hp = 100;
 	public string b = "BulletPrefabClone";
@@ -48,7 +48,6 @@ public class Player : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		//Debug.Log (rb.velocity);
 		grounded = Physics2D.OverlapCircle (groundCheck.position, groundCheckRadius, whatIsGround);
 		if (grounded && Input.GetAxisRaw ("Horizontal") == 0f) {
 			anim.SetTrigger ("Idle"); 
@@ -56,7 +55,7 @@ public class Player : MonoBehaviour {
 		if (grounded) {
 			jumping = false;
 		}
-		if (!dashing) {
+		if (!The.player.GetComponent<Charge> ().dashing) {
 			if (Input.GetAxisRaw ("Horizontal") > 0.1f) {
 				sprRend.flipX = false;
 				direction = 1;
@@ -70,22 +69,22 @@ public class Player : MonoBehaviour {
 			}
 		}
 
-		if (Input.GetKey (KeyCode.JoystickButton4) || Input.GetKey (KeyCode.Q)) {
+		if (Config.SPEC1 || Input.GetKey (KeyCode.Q)) {
 			skill1 = true;
 			The.player.GetComponent<Charge> ().rdy = skill1;
-			dashing = true;
+			The.player.GetComponent<Charge> ().dashing = true;
 		}
-		if (Input.GetKey (KeyCode.JoystickButton5) || Input.GetKey (KeyCode.E)) {
+		if (Config.SPEC2 || Input.GetKey (KeyCode.E)) {
 			skill2 = true;
 			The.player.GetComponent<Shotgun> ().rdy = skill2;
 		}
 
-		if ((Input.GetKeyDown (KeyCode.Space) || Input.GetKey(KeyCode.JoystickButton0)) && grounded && !jumping) {
+		if (Config.JUMP && grounded && !jumping) {
 			rb.velocity = new Vector2 (rb.velocity.x, jumpHeight);
 			jumping = true;
 			anim.SetTrigger ("Jump");
 		}
-		if (Input.GetKey (KeyCode.Joystick1Button1) || Input.GetKey(KeyCode.LeftControl)) {
+		if (Config.SHOOT || Input.GetKey(KeyCode.LeftControl)) {
 			firing = true;	
 		} else {
 			firing = false; 
@@ -114,8 +113,8 @@ public class Player : MonoBehaviour {
 }
 //
 //	internal Rigidbody body;
-////	private bool movingLeft = false;
-////	private bool movingRight = false;
+//	private bool movingLeft = false;
+//	private bool movingRight = false;
 //	public bool jumping = false;
 //	public bool firing = false;
 //	public bool pressFire = false;
@@ -216,13 +215,9 @@ public class Player : MonoBehaviour {
 //			}
 //			pressFire = true;
 //		} 
-////
-////		if (The.enemy.hp == 0)
-////		{
-////			SceneManager.LoadScene("End");
-////		}
+//
+//		
 //	}
-//
-//
+
 //
 //}

@@ -44,6 +44,9 @@ public class Bullet : MonoBehaviour {
 			Destroy(this.gameObject);
 			The.player.hp = The.player.hp - 10;
 		}
+		if(other.transform.gameObject.name == this.gameObject.name) {
+			Destroy(this.gameObject);
+		}
 
 	}
 

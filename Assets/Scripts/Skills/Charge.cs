@@ -17,6 +17,9 @@ public class Charge : MonoBehaviour {
 	public Vector3 originalCameraPosition;
 	public float shakeAmount = 0;
 	public Camera mainCam;
+	public bool dashing;
+	public bool activeSkill;
+	public bool skill1;
 
 
 	void Start () {
@@ -44,10 +47,10 @@ public class Charge : MonoBehaviour {
 			cooldown -= 1f * Time.deltaTime;
 			ready += 1f * Time.deltaTime;
 			activated = false;
-			The.player.activeSkill = false;
+			activeSkill = false;
 			rdy = false;
-			The.player.dashing = false;
-			The.player.skill1 = false;
+			dashing = false;
+			skill1 = false;
 			The.player.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0f,The.player.GetComponent<Rigidbody2D>().velocity.y);
 		}
 		if (cooldown <= 0f) {
@@ -104,4 +107,5 @@ public class Charge : MonoBehaviour {
 			The.enemy.huggingWall = false;
 		}
 	}
+ 
 }

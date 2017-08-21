@@ -1,12 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Skills\Shotgun.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GUI\InGameGui.cs">
     <Files>
-      <File FileName="Assets\Scripts\Player Stuff\Player.cs" Line="91" Column="20" />
-      <File FileName="Assets\Scripts\Enemy.cs" Line="44" Column="94" />
-      <File FileName="Assets\Scripts\Skills\Charge.cs" Line="47" Column="120" />
-      <File FileName="Assets\Scripts\GUI\InGameGui.cs" Line="141" Column="1" />
-      <File FileName="Assets\Scripts\Skills\Shotgun.cs" Line="31" Column="49" />
+      <File FileName="Assets\Scripts\Player Stuff\Player.cs" Line="4" Column="3" />
+      <File FileName="Assets\Scripts\Enemy.cs" Line="4" Column="3" />
+      <File FileName="Assets\Scripts\GUI\SceneLoader.cs" Line="31" Column="4" />
+      <File FileName="Assets\Scripts\MainMenu.cs" Line="155" Column="21" />
+      <File FileName="Assets\Scripts\GUI\InGameGui.cs" Line="67" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

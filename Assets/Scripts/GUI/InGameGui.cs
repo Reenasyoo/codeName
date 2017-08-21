@@ -23,7 +23,6 @@ public class InGameGui : Menu {
 
 	// Use this for initialization
 	void Start () {
-
 		EventSystem = CreateEventSystem();
 		ingameGui = CreateCanvas("ingameCanvas");
 
@@ -32,20 +31,109 @@ public class InGameGui : Menu {
 		buttonTexture = Resources.Load<Sprite>("ButtonTest");
 		buttonTextureH = Resources.Load<Sprite>("ButtonTestHover");
 		charArray = Resources.LoadAll<Sprite>("32x32char");
-
+		
+		charGui();
+		
 		pausePanel = CreatePanel("Pause Panel", Color.black, 0f, 0f, 1f, 1f, ingameGui, false);
+		pausePanel.AddComponent<VerticalLayoutGroup>();
+		pausePanel.GetComponent<VerticalLayoutGroup>().padding.left = 150;
+		pausePanel.GetComponent<VerticalLayoutGroup>().padding.right = 150;
 
+		winner = createText("winner", pausePanel, 0.4f, 0.6f, 0.6f, 0.8f);
+		winner.GetComponent<Text> ().color = Color.white;
+		winner.GetComponent<Text> ().text = playerWin;
+		
 		resumeButton = CreateButton(60, "Resume", pausePanel, resume);
 		restartButton = CreateButton(0, "Restart", pausePanel, restartScene);
 		mainMenuButton = CreateButton(-60, "Main Menu", pausePanel, menu);
 		quitButton = CreateButton(-120, "Quit Game", pausePanel, quitGame);
 
-		winner = createText("winner", pausePanel, 0.4f, 0.6f, 0.6f, 0.8f);
-		winner.GetComponent<Text> ().color = Color.white;
-		winner.GetComponent<Text> ().text = playerWin;
 
-		charGui();
+	}
+	
+	// Update is called once per frame
+	void Update () {
 
+		// c = canvas object accesor
+		Canvas c = ingameGui.GetComponent<Canvas>();
+		cam = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
+		if (c != null) {
+			c.renderMode = RenderMode.ScreenSpaceCamera;
+			c.worldCamera = cam;
+		}
+		
+		pVal.value = The.player.hp;
+		eVal.value = The.enemy.hp;
+		p1Spec1Val.value = The.player.GetComponent<Shotgun>().ready;
+		p1Spec2Val.value = The.player.GetComponent<Charge>().ready;
+		p2Spec1Val.value = The.enemy.GetComponent<Shotgun>().ready;
+		p2Spec2Val.value = The.enemy.GetComponent<Charge>().ready;
+			
+		if(The.enemy.hp <= 0){
+			// TODO: change this to 1st player char name
+			playerWin = "1st player";
+			
+		} 
+		else if(The.player.hp <= 0) {
+			// TODO: change this to 1st player char name
+			playerWin = "2nd player"; 
+		}
+
+		if((Input.GetKeyUp(KeyCode.Escape) || Input.GetKeyUp(KeyCode.JoystickButton3)) && !isEnd) {
+			isPaused = !isPaused;
+			if(isPaused) {
+				counter++;
+			}
+			else {
+				EventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+			}
+		}
+
+		if (isPaused) {
+			pausePanel.SetActive(true);
+			Time.timeScale = 0f;
+		}
+		else {
+			pausePanel.SetActive(false);
+			Time.timeScale = 1f;
+		}
+
+		if( counter == 1) {
+			EventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(resumeButton);
+			counter = 0;
+		}
+
+		if((The.player.hp <= 0 || The.enemy.hp <= 0) && !isEnd) {
+			endGame();
+			isPaused = true;
+			isEnd = true;
+		}
+	
+	}
+
+	public void resume(){
+		isPaused = false;
+		counter = 0;
+		EventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
+	}
+
+	public void restartScene(){
+		LoadScene(SceneManager.GetActiveScene().name, ingameGui);
+		Debug.Break();
+	}
+
+	public void menu () {
+		LoadScene("MainMenu", ingameGui );
+	}
+
+	public void endGame() {
+		pausePanel.SetActive(true);
+		EventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(restartButton);
+		resumeButton.SetActive(false);
+		
+		Time.timeScale = 0f;
+		winner.GetComponent<Text> ().text = playerWin + " Won!";
+	
 	}
 
 	void charGui() {
@@ -65,7 +153,6 @@ public class InGameGui : Menu {
 		p1Text.GetComponent<Text> ().text = charArray[1].name;
 
 		playerHp = CreateLoader("PlayerHp", p1Info, bSprite, fSprite, 0f, 0.4f, 1f, 0.7f, new Vector2(0,0));
-		playerHp.GetComponent<Slider>().interactable = false;
 		playerHp.GetComponent<Slider>().maxValue = 100;
 		pVal = playerHp.GetComponent<Slider>();
 		
@@ -90,7 +177,6 @@ public class InGameGui : Menu {
 		p2Text.GetComponent<Text> ().text = charArray[1].name;
 
 		enemyHp = CreateLoader("PlayerHp", p2Info, bSprite, fSprite, 0f, 0.4f, 1f, 0.7f, new Vector2(0,0));
-		enemyHp.GetComponent<Slider>().interactable = false;
 		enemyHp.GetComponent<Slider>().maxValue = 100;
 		RectTransformUtility.FlipLayoutOnAxis(enemyHp.GetComponent<RectTransform> (), 0, true, false);
 		enemyHp.GetComponent<Slider>().direction = Slider.Direction.RightToLeft;
@@ -114,90 +200,7 @@ public class InGameGui : Menu {
 		p2Spec2Val = p2Spec2.GetComponent<Slider>();
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-
-		// c = canvas object accesor
-		Canvas c = ingameGui.GetComponent<Canvas>();
-		cam = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<Camera>();
-		if (c != null) {
-			c.renderMode = RenderMode.ScreenSpaceCamera;
-			c.worldCamera = cam;
-		}
-		
-		pVal.value = The.player.hp;
-		eVal.value = The.enemy.hp;
-		p1Spec1Val.value = The.player.GetComponent<Shotgun>().ready;
-		p1Spec2Val.value = The.player.GetComponent<Charge>().ready;
-		p2Spec1Val.value = The.enemy.GetComponent<Shotgun>().ready;
-		p2Spec2Val.value = The.enemy.GetComponent<Charge>().ready;
-			
-		if(The.enemy.hp == 0){
-			// TODO: change this to 1st player char name
-			playerWin = "1st player";
-			
-		} 
-		else if(The.player.hp == 0) {
-			// TODO: change this to 1st player char name
-			playerWin = "2nd player"; 
-		}
-
-		if(Input.GetKeyUp(KeyCode.Escape) && !isEnd) {
-			isPaused = !isPaused;
-			if(isPaused) {
-				counter++;
-			}
-			else {
-				EventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
-			}
-		}
-
-		if (isPaused) {
-			pausePanel.SetActive(true);
-			Time.timeScale = 0f;
-		}
-		else {
-			pausePanel.SetActive(false);
-			Time.timeScale = 1f;
-		}
-
-		if( counter == 1) {
-			EventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(resumeButton);
-			counter = 0;
-		}
-
-		if((The.player.hp == 0 || The.enemy.hp == 0) && !isEnd) {
-			endGame();
-			isPaused = true;
-			isEnd = true;
-		}
-	
-	}
-
-	public void resume(){
-		isPaused = false;
-		counter = 0;
-		EventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
-	}
-
-	public void restartScene(){
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	}
-
-	public void menu () {
-		LoadScene("MainMenu", ingameGui );
-	}
-
-	public void endGame() {
-		pausePanel.SetActive(true);
-		EventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(restartButton);
-		resumeButton.SetActive(false);
-		
-		Time.timeScale = 0f;
-		winner.GetComponent<Text> ().text = playerWin + " Won!";
-	
-	}
 
 	
 }
+

@@ -45,6 +45,7 @@ public class Shotgun : MonoBehaviour {
 		}
 		if (duration <= 0f) {
 			activated = false;
+			
 			The.player.activeSkill = false;
 			The.player.skill2 = false;
 			rdy = false;
