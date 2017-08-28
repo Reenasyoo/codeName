@@ -1,4 +1,15 @@
-﻿using System.Collections;
+﻿/*
+	BUGS:
+		- 
+	-END OF BUG
+
+	TODO : 
+		- change winner text to char name
+		-
+	-END OF TODO
+
+ */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,6 +30,9 @@ public class InGameGui : Menu {
 	private Sprite fSprite;
 	private Sprite[] charArray;
 
+	public int chID;
+	public int chID2;
+
 	private Camera cam;
 
 	// Use this for initialization
@@ -30,7 +44,10 @@ public class InGameGui : Menu {
 		fSprite = Resources.Load<Sprite>("SliderFiller");
 		buttonTexture = Resources.Load<Sprite>("ButtonTest");
 		buttonTextureH = Resources.Load<Sprite>("ButtonTestHover");
-		charArray = Resources.LoadAll<Sprite>("32x32char");
+		charArray = Resources.LoadAll<Sprite>("Characters");
+
+		chID = getCharId(The.p1, charArray);
+		chID2 = getCharId(The.p2, charArray);
 		
 		charGui();
 		
@@ -43,10 +60,10 @@ public class InGameGui : Menu {
 		winner.GetComponent<Text> ().color = Color.white;
 		winner.GetComponent<Text> ().text = playerWin;
 		
-		resumeButton = CreateButton(60, "Resume", pausePanel, resume);
-		restartButton = CreateButton(0, "Restart", pausePanel, restartScene);
-		mainMenuButton = CreateButton(-60, "Main Menu", pausePanel, menu);
-		quitButton = CreateButton(-120, "Quit Game", pausePanel, quitGame);
+		resumeButton = CreateButton("Resume", pausePanel, resume, 60);
+		restartButton = CreateButton("Restart", pausePanel, restartScene, 0);
+		mainMenuButton = CreateButton("Main Menu", pausePanel, menu, 60);
+		quitButton = CreateButton("Quit Game", pausePanel, quitGame, -120);
 
 
 	}
@@ -70,12 +87,9 @@ public class InGameGui : Menu {
 		p2Spec2Val.value = The.enemy.GetComponent<Charge>().ready;
 			
 		if(The.enemy.hp <= 0){
-			// TODO: change this to 1st player char name
 			playerWin = "1st player";
-			
 		} 
 		else if(The.player.hp <= 0) {
-			// TODO: change this to 1st player char name
 			playerWin = "2nd player"; 
 		}
 
@@ -141,16 +155,16 @@ public class InGameGui : Menu {
 		GameObject p1pImg = CreatePanel("Player 1 Image",Color.black, 0.01f, 0.06f, 0.3f, 0.98f,p1Panel, true);
 		p1pImg.AddComponent<Mask>();
 		GameObject p1Image = CreateImage("Image", p1pImg, 0, 0, 1, 1);
-		p1Image.GetComponent<Image> ().sprite = charArray[1];
+		p1Image.GetComponent<Image> ().sprite = charArray[chID];
 		p1Image.GetComponent<RectTransform> ().pivot = new Vector2(0.5f,1);
 		p1Image.GetComponent<RectTransform> ().localScale = new Vector3 (1f, 2f, 1f);
 		p1Image.GetComponent<RectTransform> ().anchoredPosition = new Vector2(0f,0f);
 
 		GameObject p1Info = CreatePanel("Player 1 Info",Color.black, 0.31f, 0.06f, 0.98f, 0.98f, p1Panel, true);
-		GameObject p1Text = createText("p1 Text", p1Info, 0f, 0.7f, 1f, 1f);
+		GameObject p1Text = createText("Player 1 Text", p1Info, 0f, 0.7f, 1f, 1f);
 		p1Text.GetComponent<Text> ().fontSize = 20;
 		p1Text.GetComponent<Text> ().color = Color.white;
-		p1Text.GetComponent<Text> ().text = charArray[1].name;
+		p1Text.GetComponent<Text> ().text = The.p1;
 
 		playerHp = CreateLoader("PlayerHp", p1Info, bSprite, fSprite, 0f, 0.4f, 1f, 0.7f, new Vector2(0,0));
 		playerHp.GetComponent<Slider>().maxValue = 100;
@@ -165,7 +179,7 @@ public class InGameGui : Menu {
 		GameObject p2pImg = CreatePanel("Player 2 Image",Color.black, 0.01f, 0.06f, 0.3f, 0.98f, p2Panel, true);
 		p2pImg.AddComponent<Mask>();
 		GameObject p2Image = CreateImage("Image", p2pImg, 0, 0, 1, 1);
-		p2Image.GetComponent<Image> ().sprite = charArray[1];
+		p2Image.GetComponent<Image> ().sprite = charArray[chID2];
 		p2Image.GetComponent<RectTransform> ().pivot = new Vector2(0.5f,1);
 		p2Image.GetComponent<RectTransform> ().localScale = new Vector3 (-1f, 2f, 1f);
 		p2Image.GetComponent<RectTransform> ().anchoredPosition = new Vector2(0f,0f);
@@ -174,7 +188,7 @@ public class InGameGui : Menu {
 		GameObject p2Text = createText("p2 Text", p2Info, 0f, 0.7f, 1f, 1f);
 		p2Text.GetComponent<Text> ().fontSize = 20;
 		p2Text.GetComponent<Text> ().color = Color.white;
-		p2Text.GetComponent<Text> ().text = charArray[1].name;
+		p2Text.GetComponent<Text> ().text = The.p2;
 
 		enemyHp = CreateLoader("PlayerHp", p2Info, bSprite, fSprite, 0f, 0.4f, 1f, 0.7f, new Vector2(0,0));
 		enemyHp.GetComponent<Slider>().maxValue = 100;
@@ -201,6 +215,15 @@ public class InGameGui : Menu {
 		
 	}
 
+	public int getCharId(string bName, Sprite[] chA) {
+			int temp = 0;
+			for(int i = 0; i< chA.Length; i++){
+				if(bName == chA[i].name) {
+					temp =  i;
+				}
+			}
+			return temp;
+		}
 	
 }
 

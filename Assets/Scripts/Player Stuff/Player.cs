@@ -4,7 +4,7 @@ using UnityEngine;
 //using UnityEditor;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour {
+public class Player : MainMenu {
 	
 	[Header("Movement")]
 	public float moveSpeed;
@@ -38,13 +38,24 @@ public class Player : MonoBehaviour {
 	public bool skill2 = false;
 
 
+	// Test
+	int chID;
+	Sprite[] charArray;
+
+
 	void Start() {
+		charArray = Resources.LoadAll<Sprite>("Characters");
 		The.player = this;
 		rb = GetComponent<Rigidbody2D> ();
 		sprRend = GetComponent<SpriteRenderer> ();
 		anim = GetComponent<Animator> ();
 		prefab = Resources.Load<GameObject>("Prefabs/BulletPrefab");
 		direction = 1;
+		chID = getCharId(The.p1, charArray);
+		sprRend.sprite = charArray[chID];
+		//Debug.Break();
+		Debug.Log("Player imgsadasda : "+ The.p1);
+		
 	}
 
 	void FixedUpdate() {
