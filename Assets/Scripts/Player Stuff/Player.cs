@@ -4,7 +4,7 @@ using UnityEngine;
 //using UnityEditor;
 using UnityEngine.SceneManagement;
 
-public class Player : MainMenu {
+public class Player : MonoBehaviour {
 	
 	[Header("Movement")]
 	public float moveSpeed;
@@ -121,6 +121,16 @@ public class Player : MainMenu {
 			this.hp =  this.hp - 10;
 		}
 	}
+
+	public int getCharId(string bName, Sprite[] chA) {
+			int temp = 0;
+			for(int i = 0; i< chA.Length; i++){
+				if(bName == chA[i].name) {
+					temp =  i;
+				}
+			}
+			return temp;
+		}
 }
 //
 //	internal Rigidbody body;
