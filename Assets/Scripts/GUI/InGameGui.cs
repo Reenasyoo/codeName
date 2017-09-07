@@ -40,11 +40,11 @@ public class InGameGui : Menu {
 		EventSystem = CreateEventSystem();
 		ingameGui = CreateCanvas("ingameCanvas");
 
-		bSprite = Resources.Load<Sprite>("sliderBg");
-		fSprite = Resources.Load<Sprite>("SliderFiller");
-		buttonTexture = Resources.Load<Sprite>("ButtonTest");
-		buttonTextureH = Resources.Load<Sprite>("ButtonTestHover");
-		charArray = Resources.LoadAll<Sprite>("Characters");
+		bSprite = Resources.Load<Sprite>("Sprites/sliderBg");
+		fSprite = Resources.Load<Sprite>("Sprites/SliderFiller");
+		buttonTexture = Resources.Load<Sprite>("Sprites/ButtonTest");
+		buttonTextureH = Resources.Load<Sprite>("Sprites/ButtonTestHover");
+		charArray = Resources.LoadAll<Sprite>("Sprites/Characters");
 
 		chID = getCharId(The.p1, charArray);
 		chID2 = getCharId(The.p2, charArray);

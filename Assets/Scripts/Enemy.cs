@@ -99,13 +99,19 @@ public class Enemy : MonoBehaviour {
 	public bool huggingWall = false;
 	private bool skill2 = false;
 
+	int chID;
+	Sprite[] charArray;
+
 
 	void Start() {
+		charArray = Resources.LoadAll<Sprite>("Sprites/Characters");
 		The.enemy = this;
 		rb = GetComponent<Rigidbody2D> ();
 		sprRend = GetComponent<SpriteRenderer> ();
 		anim = GetComponent<Animator> ();
 		prefab = Resources.Load<GameObject>("Prefabs/BulletPrefab");
+		//chID = getCharId(The.p1, charArray);
+		sprRend.sprite = charArray[2];
 		direction = 1;
 	}
 
@@ -144,12 +150,12 @@ public class Enemy : MonoBehaviour {
 		// 	The.player.GetComponent<Shotgun> ().rdy = skill2;
 		// }
 
-		if (Config.JUMP2 && grounded && !jumping) {
+		if (Config.JUMP2 || Input.GetKey(KeyCode.UpArrow) && grounded && !jumping) {
 			rb.velocity = new Vector2 (rb.velocity.x, jumpHeight);
 			jumping = true;
 			anim.SetTrigger ("Jump");
 		}
-		if (Config.SHOOT2 || Input.GetKey(KeyCode.LeftControl)) {
+		if (Config.SHOOT2 || Input.GetKey(KeyCode.RightControl)) {
 			firing = true;	
 		} else {
 			firing = false; 
@@ -181,6 +187,15 @@ public class Enemy : MonoBehaviour {
 		}
 
 	}
+	public int getCharId(string bName, Sprite[] chA) {
+			int temp = 0;
+			for(int i = 0; i< chA.Length; i++){
+				if(bName == chA[i].name) {
+					temp =  i;
+				}
+			}
+			return temp;
+		}
 }
 //
 //	internal Rigidbody body;
@@ -286,11 +301,11 @@ public class Enemy : MonoBehaviour {
 //			}
 //			pressFire = true;
 //		} 
-////
-////		if (The.enemy.hp == 0)
-////		{
-////			SceneManager.LoadScene("End");
-////		}
+//
+//		if (The.enemy.hp == 0)
+//		{
+//			SceneManager.LoadScene("End");
+//		}
 //	}
 //
 //

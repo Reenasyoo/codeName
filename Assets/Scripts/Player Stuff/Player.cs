@@ -44,7 +44,7 @@ public class Player : MonoBehaviour {
 
 
 	void Start() {
-		charArray = Resources.LoadAll<Sprite>("Characters");
+		charArray = Resources.LoadAll<Sprite>("Sprites/Characters");
 		The.player = this;
 		rb = GetComponent<Rigidbody2D> ();
 		sprRend = GetComponent<SpriteRenderer> ();
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour {
 		chID = getCharId(The.p1, charArray);
 		sprRend.sprite = charArray[chID];
 		//Debug.Break();
-		Debug.Log("Player imgsadasda : "+ The.p1);
+		//Debug.Log("Player imgsadasda : "+ The.p1);
 		
 	}
 
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour {
 			The.player.GetComponent<Shotgun> ().rdy = skill2;
 		}
 
-		if (Config.JUMP && grounded && !jumping) {
+		if (Config.JUMP || Input.GetKey(KeyCode.Space) && grounded && !jumping) {
 			rb.velocity = new Vector2 (rb.velocity.x, jumpHeight);
 			jumping = true;
 			anim.SetTrigger ("Jump");
